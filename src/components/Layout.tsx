@@ -45,10 +45,12 @@ const Layout = ({ children, title = "Crypto Tracker" }: LayoutProps) => {
 
       <main className="flex min-h-screen flex-col items-center justify-center bg-gradient-to-b from-[#150c22] to-[#232669]">
         <div className="container flex flex-col items-center justify-center gap-12 px-4 py-16 ">
-          <h1 className="text-5xl font-extrabold tracking-tight text-white sm:text-[5rem]">
-            Crypto <span className="text-[hsl(280,100%,70%)]">Price</span> App
-          </h1>
-          <div className="grid grid-cols-1 gap-4 sm:grid-cols-1 md:gap-8">
+          <Link href='/'>
+            <h1 className="text-5xl font-extrabold tracking-tight text-white sm:text-[5rem]">
+              Crypto <span className="text-[hsl(280,100%,70%)]">Price</span> App
+            </h1>
+          </Link>
+          <div className="grid w-full">
 
             {children}
           </div>
