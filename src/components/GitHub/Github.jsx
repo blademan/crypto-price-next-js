@@ -9,7 +9,7 @@ export const Github = () => {
     >
       <a
         title="View Source"
-        href="https://github.com/emjose/crypto-tracker/#header"
+        href="https://github.com/blademan/crypto-price-next-js"
         target="_blank"
         rel="noopener noreferrer"
       >
