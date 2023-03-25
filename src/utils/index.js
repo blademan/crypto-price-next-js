@@ -1,4 +1,4 @@
-export const CRYPTOCURRENCIES: Cryptocurrency[] = [
+export const CRYPTOCURRENCIES = [
   {
     id: "BTC",
     name: "Bitcoin",
@@ -121,18 +121,7 @@ export const CRYPTOCURRENCIES: Cryptocurrency[] = [
   },
 ];
 
-interface Cryptocurrency {
-  id: string;
-  name: string;
-  symbol: string;
-  iconCode: number;
-  price: number;
-  prevPrice: number;
-  highPrice: number;
-  lowPrice: number;
-}
-
-function formatPrice(price = 0): string {
+function formatPrice(price = 0) {
   const formattedPrice = Math.round(Number(price) * 100) / 100;
   return `$${formattedPrice > 0 ? formattedPrice.toLocaleString() : price}`;
 }
@@ -141,16 +130,12 @@ function extractValues(obj = [], prop = "") {
   return obj.map((item) => item[prop]);
 }
 
-function findByValue<T extends Record<string, T>>(
-  obj: T[],
-  value: T[keyof T],
-  prop: keyof T
-): T | undefined {
+function findByValue(obj = [], value = "", prop = "symbol") {
   return obj.find((item) => item[prop] === value);
 }
 
-function getSymbols() {
-  return extractValues(CRYPTOCURRENCIES, "symbol");
-}
+const getSymbols = () => {
+  return CRYPTOCURRENCIES.map((item) => item.symbol);
+};
 
 export { formatPrice, extractValues, findByValue, getSymbols };
