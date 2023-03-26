@@ -2,7 +2,6 @@ import CoinCard from "../../components/CoinCard";
 import { fetchCoinData } from "../../utils/fetchCoinData";
 
 const Coin = ({ id, cryptocurrencies }) => {
-  // const cryptocurrencies = fetchCoinData();
   const oneCoin = cryptocurrencies.find((coin) => coin.id === id);
 
   return <CoinCard coin={oneCoin} />;
