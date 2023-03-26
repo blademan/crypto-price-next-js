@@ -1,6 +1,5 @@
 import Link from "next/link";
 import { useRouter } from "next/router.js";
-import { useEffect, useState } from "react";
 
 import { usePriceColorChange } from "../hooks/usePriceColorChange";
 

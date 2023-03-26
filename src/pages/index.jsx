@@ -5,26 +5,27 @@ import { useInterval } from "../hooks/useInterval";
 import { fetchCoinData } from "../utils/fetchCoinData";
 
 export default function Home({ cryptocurrencies }) {
-  const { data, error, loading } = useCoinData(cryptocurrencies);
-
-  if (error) return <div>Failed to load</div>;
-  if (loading) return <Spinner />;
+  if (!cryptocurrencies) return <Spinner />;
 
   return (
     <>
-      {data.map((coin) => (
+      {cryptocurrencies.map((coin) => (
         <CoinCard key={coin.id} coin={coin} />
       ))}
     </>
   );
 }
 
-export const getServerSideProps = async () => {
+export const getStaticProps = async () => {
   const cryptocurrencies = await fetchCoinData();
 
   return {
     props: {
-      cryptocurrencies: cryptocurrencies,
+      cryptocurrencies,
     },
+    // Next.js will attempt to re-generate the page:
+    // - When a request comes in
+    // - At most once every 10 seconds
+    revalidate: 10, // In seconds
   };
 };

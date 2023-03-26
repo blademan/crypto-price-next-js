@@ -9,6 +9,8 @@ const fetchCoinData = async () => {
       )}`
     );
     const { data } = response;
+
+    console.log(data, "data");
     const cryptocurrencies = CRYPTOCURRENCIES.map((crypto) => {
       const { lastPrice, lowPrice, highPrice } =
         findByValue(data, crypto.symbol) || [];
@@ -21,7 +23,7 @@ const fetchCoinData = async () => {
         prevPrice: crypto?.price || 0,
       };
     });
-
+    console.log(cryptocurrencies, "cryptocurrencies");
     return cryptocurrencies;
   } catch (error) {
     console.error(error);
