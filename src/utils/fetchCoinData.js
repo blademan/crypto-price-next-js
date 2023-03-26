@@ -8,7 +8,8 @@ const fetchCoinData = async () => {
         getSymbols()
       )}`
     );
-    const { data } = response;
+
+    const { data } = response || [];
 
     const cryptocurrencies = CRYPTOCURRENCIES.map((crypto) => {
       const { lastPrice, lowPrice, highPrice, prevClosePrice } =

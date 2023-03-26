@@ -16,7 +16,7 @@ export default function Home({ cryptocurrencies }) {
 
   return (
     <>
-      {cryptocurrencies.map((coin) => (
+      {data.map((coin) => (
         <CoinCard key={coin.id} coin={coin} />
       ))}
     </>
