@@ -10,6 +10,8 @@ export default function Home({ cryptocurrencies }) {
   console.log(data);
   useInterval(fetchData, 5000);
 
+
+
   if (error) <div>{error}</div>;
 
   if (!data) <Spinner />;

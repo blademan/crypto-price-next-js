@@ -1,6 +1,21 @@
 import Link from "next/link";
 import { useRouter } from "next/router.js";
 import { useEffect, useState } from "react";
+
+import { usePriceColorChange } from "../hooks/usePriceColorChange";
+
+const CoinCard = ({ coin }) => {
+  const {
+    id,
+    name,
+    symbol,
+    iconCode,
+    price,
+    highPrice,
+    lowPrice,
+    colorClassName,
+  } = usePriceColorChange(coin);
+
 import { usePriceColorChange } from "../hooks/usePriceColorChange.js";
 
 const CoinCard = ({ coin }) => {
@@ -19,15 +34,7 @@ const CoinCard = ({ coin }) => {
   //   colorClassName,
   // } = usePriceColorChange(coin);
 
-  const { id, name, symbol, iconCode, price, prevPrice, highPrice, lowPrice } =
-    coin;
 
-  const colorClassName =
-    prevPrice > price
-      ? "text-red-500"
-      : prevPrice < price
-      ? "text-green-600"
-      : "text-gray-500";
 
   // if (isIdPage) {
   //   // If the current route is an [id] page, render the link as text
@@ -49,6 +56,7 @@ const CoinCard = ({ coin }) => {
   //       <span className={colorClassName} title={price}>
   //         {price}
   //       </span>
+
 
   //       <div className="mt-4">
   //         <div className="flex items-center">
