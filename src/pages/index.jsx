@@ -6,17 +6,17 @@ import { useCoinData } from "../hooks/useCoinData";
 import { useInterval } from "../hooks/useInterval";
 
 export default function Home({ cryptocurrencies }) {
-  const { error, data, fetchData } = useCoinData(cryptocurrencies);
+  // const { error, data, fetchData } = useCoinData(cryptocurrencies);
 
-  useInterval(fetchData, 5000);
+  // useInterval(fetchData, 5000);
 
   if (!cryptocurrencies) <Spinner />;
 
-  if (error) <div>{error}</div>;
+  // if (error) <div>{error}</div>;
 
   return (
     <>
-      {data.map((coin) => (
+      {cryptocurrencies.map((coin) => (
         <CoinCard key={coin.id} coin={coin} />
       ))}
     </>
