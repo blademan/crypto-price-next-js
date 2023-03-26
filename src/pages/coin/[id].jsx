@@ -5,19 +5,15 @@ import { useInterval } from "../../hooks/useInterval";
 import { fetchCoinData } from "../../utils/fetchCoinData";
 
 const Coin = ({ id, cryptocurrencies }) => {
-  // const { error, data, fetchData } = useCoinData(cryptocurrencies);
-  // useInterval(fetchData, 5000);
+  const { error, data, fetchData } = useCoinData(cryptocurrencies);
+  useInterval(fetchData, 5000);
 
-  // if (!data) return <Spinner />;
-  // const oneCoin = data.find((coin) => coin.id === id);
+  if (!data) return <Spinner />;
+  const oneCoin = data.find((coin) => coin.id === id);
 
-  // if (!oneCoin) return <Spinner />;
+  if (!oneCoin) return <Spinner />;
 
-  // if (error) return <div>{error}</div>;
-
-  const oneCoin = cryptocurrencies.find((coin) => coin.id === id);
-
-  if (!cryptocurrencies) return <Spinner />;
+  if (error) return <div>{error}</div>;
 
   return <CoinCard coin={oneCoin} />;
 };

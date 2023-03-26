@@ -7,7 +7,7 @@ import { fetchCoinData } from "../utils/fetchCoinData";
 export default function Home({ cryptocurrencies }) {
   if (!cryptocurrencies) <Spinner />;
   const { error, data, fetchData } = useCoinData(cryptocurrencies);
-
+  console.log(data);
   useInterval(fetchData, 5000);
 
   if (error) <div>{error}</div>;
