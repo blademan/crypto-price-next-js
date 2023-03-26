@@ -1,15 +1,14 @@
-// import CoinCard from "@/components/CoinCard";
+import axios from "axios";
+import {
+  CRYPTOCURRENCIES,
+  findByValue,
+  formatPrice,
+  getSymbols,
+} from "../utils";
+
 import CoinCard from "../components/CoinCard";
-import { useCoinData } from "../utils/fetchCoinData";
 
-const Home = () => {
-  const cryptocurrencies = useCoinData();
-
-  // const { data: cryptocurrencies } = useQuery(["coinData"], fetchCoinData, {
-  //   refetchInterval: 5000, // refetch data every 5 seconds
-  //   retry: 3, // retry up to 3 times if a request fails
-  // });
-
+const Home = ({ cryptocurrencies }) => {
   return (
     <>
       {cryptocurrencies.map((coin) => (
@@ -20,3 +19,32 @@ const Home = () => {
 };
 
 export default Home;
+
+export const getServerSideProps = async () => {
+  const symbols = getSymbols();
+  const response = await axios.get(
+    `https://api.binance.com/api/v3/ticker/24hr?symbols=${JSON.stringify(
+      symbols
+    )}`
+  );
+  const { data } = response;
+
+  const cryptocurrencies = CRYPTOCURRENCIES.map((crypto) => {
+    const { lastPrice, lowPrice, highPrice } =
+      findByValue(data, crypto.symbol) || [];
+
+    return {
+      ...crypto,
+      highPrice: formatPrice(highPrice),
+      lowPrice: formatPrice(lowPrice),
+      price: formatPrice(lastPrice),
+      prevPrice: crypto?.price || 0,
+    };
+  });
+
+  return {
+    props: {
+      cryptocurrencies,
+    },
+  };
+};
