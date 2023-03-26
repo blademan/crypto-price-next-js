@@ -1,36 +1,22 @@
-import { fetchCoinData } from "../utils/fetchCoinData";
-
-import { useEffect, useState } from "react";
 import CoinCard from "../components/CoinCard";
 import Spinner from "../components/Spinner";
 import { useCoinData } from "../hooks/useCoinData";
 import { useInterval } from "../hooks/useInterval";
+import { fetchCoinData } from "../utils/fetchCoinData";
 
 export default function Home({ cryptocurrencies }) {
-  console.log(cryptocurrencies);
-  const [crypto, setCrypto] = useState(cryptocurrencies);
+  if (!cryptocurrencies) <Spinner />;
+  const { error, data, fetchData } = useCoinData(cryptocurrencies);
 
-  useEffect(() => {
-    const fetchCryptocurrencies = async () => {
-      const data = await fetchCoinData();
-      setCrypto(data);
-    };
-    fetchCryptocurrencies();
-  }, []);
+  useInterval(fetchData, 5000);
 
-  // const { error, data, fetchData } = useCoinData(cryptocurrencies);
+  if (error) <div>{error}</div>;
 
-  // useInterval(fetchData, 5000);
-
-  // if (!cryptocurrencies) <Spinner />;
-
-  // if (error) <div>{error}</div>;
-
-  if (!crypto) <Spinner />;
+  if (!data) <Spinner />;
 
   return (
     <>
-      {crypto.map((coin) => (
+      {data.map((coin) => (
         <CoinCard key={coin.id} coin={coin} />
       ))}
     </>
