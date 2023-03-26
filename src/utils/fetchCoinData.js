@@ -10,7 +10,7 @@ const fetchCoinData = async () => {
       )}`
     );
 
-    const { data } = response || [];
+    const { data } = response;
 
     const cryptocurrencies = CRYPTOCURRENCIES.map((crypto) => {
       const { lastPrice, lowPrice, highPrice, prevClosePrice } =
@@ -24,6 +24,7 @@ const fetchCoinData = async () => {
         prevPrice: formatPrice(prevClosePrice) || 0,
       };
     });
+
     return cryptocurrencies;
   } catch (error) {
     console.error(error);
