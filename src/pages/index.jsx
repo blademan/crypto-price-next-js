@@ -1,22 +1,36 @@
-// import CoinCard from "@/components/CoinCard";
 import CoinCard from "../components/CoinCard";
-import { useCoinData } from "../utils/fetchCoinData";
+import Spinner from "../components/Spinner";
+import { useCoinData } from "../hooks/useCoinData";
+import { useInterval } from "../hooks/useInterval";
+import { fetchCoinData } from "../utils/fetchCoinData";
 
-const Home = () => {
-  const cryptocurrencies = useCoinData();
+export default function Home({ cryptocurrencies }) {
+  if (!cryptocurrencies) <Spinner />;
+  const { error, data, fetchData } = useCoinData(cryptocurrencies);
+  console.log(data);
+  useInterval(fetchData, 5000);
 
-  // const { data: cryptocurrencies } = useQuery(["coinData"], fetchCoinData, {
-  //   refetchInterval: 5000, // refetch data every 5 seconds
-  //   retry: 3, // retry up to 3 times if a request fails
-  // });
+
+
+  if (error) <div>{error}</div>;
+
+  if (!data) <Spinner />;
 
   return (
     <>
-      {cryptocurrencies.map((coin) => (
+      {data.map((coin) => (
         <CoinCard key={coin.id} coin={coin} />
       ))}
     </>
   );
-};
+}
 
-export default Home;
+export async function getServerSideProps() {
+  const cryptocurrencies = await fetchCoinData();
+
+  return {
+    props: {
+      cryptocurrencies,
+    },
+  };
+}
