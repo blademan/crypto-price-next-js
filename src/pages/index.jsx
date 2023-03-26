@@ -20,7 +20,7 @@ export default function Home({ cryptocurrencies }) {
   );
 }
 
-export const getServerSideProps = async () => {
+export const getStaticProps = async () => {
   const response = await axios.get(
     `https://api.binance.com/api/v3/ticker/24hr?symbols=${JSON.stringify(
       getSymbols()

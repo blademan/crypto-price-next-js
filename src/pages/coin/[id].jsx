@@ -1,4 +1,5 @@
 import axios from "axios";
+import { useRouter } from "next/router";
 import CoinCard from "../../components/CoinCard";
 import {
   CRYPTOCURRENCIES,
@@ -15,8 +16,14 @@ const Coin = ({ id, cryptocurrencies }) => {
 
 export default Coin;
 
-export const getServerSideProps = async (context) => {
-  const { id } = context.query;
+export const getStaticPaths = async () => {
+  const paths = CRYPTOCURRENCIES.map((coin) => ({
+    params: { id: coin.id },
+  }));
+
+  return { paths, fallback: false };
+};
+export const getStaticProps = async ({ params }) => {
   const response = await axios.get(
     `https://api.binance.com/api/v3/ticker/24hr?symbols=${JSON.stringify(
       getSymbols()
@@ -39,7 +46,7 @@ export const getServerSideProps = async (context) => {
 
   return {
     props: {
-      id,
+      id: params.id,
       cryptocurrencies,
     },
   };
