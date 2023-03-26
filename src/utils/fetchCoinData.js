@@ -10,7 +10,6 @@ const fetchCoinData = async () => {
     );
     const { data } = response;
 
-    console.log(data, "data");
     const cryptocurrencies = CRYPTOCURRENCIES.map((crypto) => {
       const { lastPrice, lowPrice, highPrice } =
         findByValue(data, crypto.symbol) || [];
