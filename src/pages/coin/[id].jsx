@@ -8,6 +8,7 @@ const Coin = ({ id, cryptocurrencies }) => {
   const { error, data, fetchData } = useCoinData(cryptocurrencies);
   useInterval(fetchData, 5000);
 
+  if (!data) return <Spinner />;
   const oneCoin = data.find((coin) => coin.id === id);
 
   if (!oneCoin) return <Spinner />;

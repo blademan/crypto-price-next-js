@@ -2,12 +2,9 @@ import axios from "axios";
 import { CRYPTOCURRENCIES, findByValue, formatPrice, getSymbols } from ".";
 
 const fetchCoinData = async () => {
+  const api = process.env.NEXT_PUBLIC_API;
   try {
-    const response = await axios.get(
-      `https://api.binance.com/api/v3/ticker/24hr?symbols=${JSON.stringify(
-        getSymbols()
-      )}`
-    );
+    const response = await axios.get(`${api}${JSON.stringify(getSymbols())}`);
 
     const { data } = response || [];
 
