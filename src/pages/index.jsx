@@ -5,16 +5,10 @@ import { useInterval } from "../hooks/useInterval";
 import { fetchCoinData } from "../utils/fetchCoinData";
 
 export default function Home({ cryptocurrencies }) {
-  if (!cryptocurrencies) <Spinner />;
-  const { error, data, fetchData } = useCoinData(cryptocurrencies);
-  console.log(data);
-  useInterval(fetchData, 5000);
+  const { data, error, loading } = useCoinData(cryptocurrencies);
 
-
-
-  if (error) <div>{error}</div>;
-
-  if (!data) <Spinner />;
+  if (error) return <div>Failed to load</div>;
+  if (loading) return <Spinner />;
 
   return (
     <>
@@ -25,12 +19,12 @@ export default function Home({ cryptocurrencies }) {
   );
 }
 
-export async function getServerSideProps() {
+export const getServerSideProps = async () => {
   const cryptocurrencies = await fetchCoinData();
 
   return {
     props: {
-      cryptocurrencies,
+      cryptocurrencies: cryptocurrencies,
     },
   };
-}
+};
