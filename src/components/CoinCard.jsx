@@ -1,11 +1,18 @@
 import Link from "next/link";
 import { useEffect, useState } from "react";
+import { usePriceColorChange } from "../hooks/usePriceColorChange";
 
 const CoinCard = ({ coin }) => {
-  const { id, name, symbol, iconCode, price, prevPrice, highPrice, lowPrice } =
-    coin;
-
-  const colorClassName = price > prevPrice ? "text-green-600" : "text-red-500";
+  const {
+    id,
+    name,
+    symbol,
+    iconCode,
+    price,
+    highPrice,
+    lowPrice,
+    colorClassName,
+  } = usePriceColorChange(coin);
 
   return (
     <Link

@@ -28,7 +28,6 @@ const useCoinData = () => {
           };
         })
       );
-      console.log(cryptocurrencies);
     } catch (error) {
       console.error(error);
     }
