@@ -23,7 +23,7 @@ const fetchCoinData = async () => {
         prevPrice: crypto?.price || 0,
       };
     });
-    console.log(cryptocurrencies, "cryptocurrencies");
+
     return cryptocurrencies;
   } catch (error) {
     console.error(error);
