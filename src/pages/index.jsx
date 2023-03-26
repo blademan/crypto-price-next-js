@@ -23,7 +23,7 @@ export default function Home({ cryptocurrencies }) {
   );
 }
 
-export async function getServerSideProps() {
+export async function getStaticProps() {
   const cryptocurrencies = await fetchCoinData();
 
   return {
