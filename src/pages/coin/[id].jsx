@@ -1,8 +1,13 @@
+import axios from "axios";
 import CoinCard from "../../components/CoinCard";
-import { fetchCoinData } from "../../utils/fetchCoinData";
+import {
+  CRYPTOCURRENCIES,
+  findByValue,
+  formatPrice,
+  getSymbols,
+} from "../../utils";
 
-const Coin = () => {
-  const cryptocurrencies = fetchCoinData();
+const Coin = ({ id, cryptocurrencies }) => {
   const oneCoin = cryptocurrencies.find((coin) => coin.id === id);
 
   return <CoinCard coin={oneCoin} />;
@@ -10,12 +15,32 @@ const Coin = () => {
 
 export default Coin;
 
-export const getStaticProps = async (context) => {
-  const { id } = context.params;
+export const getServerSideProps = async (context) => {
+  const { id } = context.query;
+  const response = await axios.get(
+    `https://api.binance.com/api/v3/ticker/24hr?symbols=${JSON.stringify(
+      getSymbols()
+    )}`
+  );
+  const { data } = response;
+
+  const cryptocurrencies = CRYPTOCURRENCIES.map((crypto) => {
+    const { lastPrice, lowPrice, highPrice } =
+      findByValue(data, crypto.symbol) || [];
+
+    return {
+      ...crypto,
+      highPrice: formatPrice(highPrice),
+      lowPrice: formatPrice(lowPrice),
+      price: formatPrice(lastPrice),
+      prevPrice: crypto?.price || 0,
+    };
+  });
 
   return {
     props: {
-      id: id,
+      id,
+      cryptocurrencies,
     },
   };
 };

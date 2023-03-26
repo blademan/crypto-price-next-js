@@ -1,21 +1,49 @@
-import { useEffect } from "react";
+import axios from "axios";
 import CoinCard from "../components/CoinCard";
 import Spinner from "../components/Spinner";
-import { useCoinData } from "../hooks/useCoinData";
-import { useInterval } from "../hooks/useInterval";
-import { fetchCoinData } from "../utils/fetchCoinData";
+import {
+  CRYPTOCURRENCIES,
+  findByValue,
+  formatPrice,
+  getSymbols,
+} from "../utils";
 
-export default function Home() {
-  const { error, data, fetchData } = useCoinData();
-  console.log(data);
-  useInterval(fetchData, 5000);
-  if (!data) return <Spinner />;
-  if (error) return <div>Something went wrong</div>;
+export default function Home({ cryptocurrencies }) {
+  if (!cryptocurrencies) return <Spinner />;
+
   return (
     <>
-      {data.map((coin) => (
+      {cryptocurrencies.map((coin) => (
         <CoinCard key={coin.id} coin={coin} />
       ))}
     </>
   );
 }
+
+export const getServerSideProps = async () => {
+  const response = await axios.get(
+    `https://api.binance.com/api/v3/ticker/24hr?symbols=${JSON.stringify(
+      getSymbols()
+    )}`
+  );
+  const { data } = response;
+
+  const cryptocurrencies = CRYPTOCURRENCIES.map((crypto) => {
+    const { lastPrice, lowPrice, highPrice } =
+      findByValue(data, crypto.symbol) || [];
+
+    return {
+      ...crypto,
+      highPrice: formatPrice(highPrice),
+      lowPrice: formatPrice(lowPrice),
+      price: formatPrice(lastPrice),
+      prevPrice: crypto?.price || 0,
+    };
+  });
+
+  return {
+    props: {
+      cryptocurrencies,
+    },
+  };
+};
