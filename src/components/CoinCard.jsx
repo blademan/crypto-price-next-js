@@ -1,8 +1,6 @@
 import Link from "next/link";
 import { useRouter } from "next/router.js";
-
 import { usePriceColorChange } from "../hooks/usePriceColorChange";
-
 const CoinCard = ({ coin }) => {
   const router = useRouter();
 

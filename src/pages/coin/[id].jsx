@@ -1,14 +1,8 @@
-import axios from "axios";
-import { useRouter } from "next/router";
 import CoinCard from "../../components/CoinCard";
-import {
-  CRYPTOCURRENCIES,
-  findByValue,
-  formatPrice,
-  getSymbols,
-} from "../../utils";
+import { useCoinData } from "../../utils/fetchCoinData";
 
-const Coin = ({ id, cryptocurrencies }) => {
+const Coin = ({ id }) => {
+  const cryptocurrencies = useCoinData();
   const oneCoin = cryptocurrencies.find((coin) => coin.id === id);
 
   return <CoinCard coin={oneCoin} />;
@@ -16,38 +10,12 @@ const Coin = ({ id, cryptocurrencies }) => {
 
 export default Coin;
 
-export const getStaticPaths = async () => {
-  const paths = CRYPTOCURRENCIES.map((coin) => ({
-    params: { id: coin.id },
-  }));
-
-  return { paths, fallback: false };
-};
-export const getStaticProps = async ({ params }) => {
-  const response = await axios.get(
-    `https://api.binance.com/api/v3/ticker/24hr?symbols=${JSON.stringify(
-      getSymbols()
-    )}`
-  );
-  const { data } = response;
-
-  const cryptocurrencies = CRYPTOCURRENCIES.map((crypto) => {
-    const { lastPrice, lowPrice, highPrice } =
-      findByValue(data, crypto.symbol) || [];
-
-    return {
-      ...crypto,
-      highPrice: formatPrice(highPrice),
-      lowPrice: formatPrice(lowPrice),
-      price: formatPrice(lastPrice),
-      prevPrice: crypto?.price || 0,
-    };
-  });
+export const getServerSideProps = async (context) => {
+  const { id } = context.query;
 
   return {
     props: {
-      id: params.id,
-      cryptocurrencies,
+      id: id,
     },
   };
 };
